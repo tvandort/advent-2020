@@ -14,7 +14,7 @@
     "typescript": "^4.1.2"
   },
   "scripts": {
-    "dev": "node watcher.js",
+    "dev": "test",
     "test": "jest --watch",
     "listen": "node --inspect ./build/index.js"
   }
