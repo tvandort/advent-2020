@@ -4,7 +4,7 @@ const { spawn } = require("child_process");
 const watch = new TscWatchClient();
 
 watch.on("success", () => {
-  spawn("yarn", ["test"], {
+  spawn("yarn", ["jest"], {
     cwd: process.cwd(),
     stdio: "inherit",
   });

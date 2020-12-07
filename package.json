@@ -18,7 +18,7 @@
     "dev": "yarn build && yarn start ${0}",
     "start": "node ./build/index.js",
     "build": "tsc",
-    "test": "jest --watch",
+    "test": "node ./watcher.js",
     "listen": "node --inspect ./build/index.js"
   }
 }
