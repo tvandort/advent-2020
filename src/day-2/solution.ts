@@ -29,13 +29,12 @@ interface Rule {
   letter: string;
 }
 
-const passes = ({
-  password,
-  rule,
-}: {
+interface Password {
   rule: Rule;
   password: string;
-}): boolean => {
+}
+
+const oldJobPasses = ({ password, rule }: Password): boolean => {
   const instancesOfLetter = password
     .split("")
     .filter((letter) => letter === rule.letter).length;
@@ -43,7 +42,28 @@ const passes = ({
   return instancesOfLetter <= rule.upper && instancesOfLetter >= rule.lower;
 };
 
-const countValidPasswords = (input: string) =>
-  getRows(input).map(getRuleAndPassword).map(passes).filter(Boolean).length;
+const newJobPasses = ({
+  password,
+  rule: { lower, upper, letter },
+}: Password): boolean => {
+  const firstPresent = password[lower - 1] === letter;
+  const lastPresent = password[upper - 1] === letter;
+  return (firstPresent || lastPresent) && !(firstPresent && lastPresent);
+};
 
-export { countValidPasswords, getRows, getRuleAndPassword, passes };
+const countValidPasswords = ({
+  input,
+  matcher,
+}: {
+  input: string;
+  matcher: (password: Password) => boolean;
+}) =>
+  getRows(input).map(getRuleAndPassword).map(matcher).filter(Boolean).length;
+
+export {
+  countValidPasswords,
+  getRows,
+  getRuleAndPassword,
+  oldJobPasses,
+  newJobPasses,
+};

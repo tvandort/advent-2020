@@ -2,7 +2,8 @@ import {
   countValidPasswords,
   getRows,
   getRuleAndPassword,
-  passes,
+  newJobPasses,
+  oldJobPasses,
 } from "./solution";
 
 const input = `
@@ -41,20 +42,56 @@ describe("day 2", () => {
       expect(password).toEqual("abcde");
     });
 
-    test("passing password", () => {
-      expect(
-        passes({ password: "abcde", rule: { lower: 1, upper: 3, letter: "a" } })
-      ).toBe(true);
+    describe("old job matching", () => {
+      test("passing password", () => {
+        expect(
+          oldJobPasses({
+            password: "abcde",
+            rule: { lower: 1, upper: 3, letter: "a" },
+          })
+        ).toBe(true);
+      });
+
+      test("failing password", () => {
+        expect(
+          oldJobPasses({
+            password: "cdefg",
+            rule: { lower: 1, upper: 3, letter: "b" },
+          })
+        ).toBe(false);
+      });
     });
 
-    test("failing password", () => {
-      expect(
-        passes({ password: "cdefg", rule: { lower: 1, upper: 3, letter: "b" } })
-      ).toBe(false);
+    describe("new job matching", () => {
+      test("passing password", () => {
+        expect(
+          newJobPasses({
+            password: "abcde",
+            rule: { lower: 1, upper: 3, letter: "a" },
+          })
+        ).toBe(true);
+      });
+
+      test("failing password", () => {
+        expect(
+          newJobPasses({
+            password: "cdefg",
+            rule: { lower: 1, upper: 3, letter: "b" },
+          })
+        ).toBe(false);
+      });
     });
 
-    test("count valid passwords", () => {
-      expect(countValidPasswords(input)).toBe(2);
+    test("count valid passwords with old method", () => {
+      expect(countValidPasswords({ input, matcher: oldJobPasses })).toBe(2);
     });
+
+    test("count valid passwords with new method", () => {
+      expect(countValidPasswords({ input, matcher: newJobPasses })).toBe(1);
+    });
+
+    // test("count valid passwords with new method", () => {
+    //   expect(countValidPasswords({ input, matcher: oldJobPasses })).toBe(2);
+    // });
   });
 });
