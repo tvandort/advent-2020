@@ -8,14 +8,10 @@ program.option(
 
 program.parse(process.argv);
 
-if (isNaN(program.day)) {
+if (program.day !== undefined && isNaN(program.day)) {
   console.log("--day parameter must be a number.");
 }
 
 if (program.day !== undefined) {
   require(`./day-${program.day}`);
-}
-
-if (program.args.length === 0) {
-  console.log(program.help());
 }
